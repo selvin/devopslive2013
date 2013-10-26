@@ -97,16 +97,66 @@ This article shows step by step instructions on how to setup your python project
     127.0.0.1 - - [25/Oct/2013 20:42:53] "GET / HTTP/1.1" 200 13
     127.0.0.1 - - [25/Oct/2013 20:42:57] "GET /devopslive HTTP/1.1" 200 18
 
+## Setup Tests
+
+cd twitter-commons/tests/python/mydomain
+mkdir myproject
+cd myproject
+
+### Write tests
+
+    cat >test_myproject.py <<EOF
+    from mydomain.myproject import hello
+
+    def test_hello():
+      assert 'Hello World' in hello()
+      assert 'Hello devopslive' in hello('devopslive')
+    EOF
+
+### Setup BUILD file
+
+    cat >BUILD <<EOF
+    python_test_suite(
+      name='all',
+      dependencies=[
+        pants(':test_myproject')
+      ]
+    )
+
+    python_tests(
+      name='test_myproject',
+      sources=globs('*.py'),
+      dependencies=[
+        pants('src/python/mydomain/myproject:myproject-lib')
+      ]
+    )
+    EOF
+
+### Run tests
+
+    ~/workspace/twitter-commons (master)$ ./pants tests/python/mydomain/myproject:all
+    Build operating on targets: OrderedSet([PythonTestSuite(tests/python/mydomain/myproject/BUILD:all)])
+    ========================================== test session starts ==========================================
+    platform linux2 -- Python 2.7.4 -- pytest-2.4.2
+    collected 1 items 
+
+    tests/python/mydomain/myproject/test_myproject.py .
+
+    ======================================= 1 passed in 0.04 seconds ========================================
+    tests.python.mydomain.myproject.test_myproject                                  .....   SUCCESS
+
+
 ## Existing projects
 
 Continue to maintain setup.py until you are ready to switchover to pants
-Add BUILD files to your repo
+Add BUILD files to your repo and setup dependencies
 
 Example:
 
-    # Your project is at myproject/src and myproject/tests
+    # Sources are in myproject/src
     ln -s myproject/src twitter-commons/src/python/mydomain/myproject
     cd twitter-commons && ./pants src/python/mydomain/myproject
-    
+
+    # Tests are in myproject/tests
     ln -s myproject/tests twitter-commons/tests/python/mydomain/myproject
-    cd twitter-commons && ./pants tests/python/mydomain/myproject
+    cd twitter-commons && ./pants tests/python/mydomain/myproject:all
