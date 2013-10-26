@@ -1,6 +1,6 @@
 # Python Projects in "twitter commons"
 
-This article shows step by step instructions on how to setup your python projects to build PEXs using pants in twitter commonsi. It uses a bottle HTTP server as the example project.
+This article shows step by step instructions on how to setup your python projects to build PEXs using pants in [twitter commons](http://github.com/twitter/commons). It uses a bottle HTTP server as the example project.
 
 ## Initial Setup
 
