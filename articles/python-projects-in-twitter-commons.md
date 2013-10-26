@@ -20,7 +20,8 @@ This article shows step by step instructions on how to setup your python project
     mkdir myproject
     cd myproject
 
-    # Library
+#### Library
+
     cat >__init__.py <<EOF
     import bottle
 
@@ -31,7 +32,8 @@ This article shows step by step instructions on how to setup your python project
       return 'Hello %s!\n' % name
     EOF
 
-    # Driver
+#### Driver
+
     mkdir -p bin
     cat >bin/myproject.py <<EOF
     import bottle
@@ -49,7 +51,8 @@ This article shows step by step instructions on how to setup your python project
       app.main()
     EOF
 
-    # BUILD File
+#### BUILD File
+
     cat >BUILD <<EOF
     python_library(
       name='myproject-lib',
